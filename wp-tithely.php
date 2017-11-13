@@ -71,22 +71,22 @@ class TithelyOptions {
 			<p>There are two ways you can insert your button.</p>
 
 			<p>1. Insert the WP Tithely Widget into one of your sidebars. You can insert your Church ID and the text you would like the button to display.</p>
-			<p>2. You can insert the button into your page content using the shortcode [tithely]. It will use the Church ID and Button Text defined in the options above, unless you include the additional attributes outlined below: [tithely button="Donate Now" id="12345" amount="100" styling_class="button" give-to="Building Fund"]</p>.
+			<p>2. You can insert the button into your page content using the shortcode <code>[tithely]</code>. It will use the Church ID and Button Text defined in the options above, unless you include the additional attributes outlined below: <code>[tithely button="Donate Now" id="12345" amount="100" styling_class="button" give-to="Building Fund"]</code></p>.
 
 			<h2>Shortcode Attributes</h2>
-			<p><strong>button</strong> <br>
+			<p><strong><code>button</code></strong> <br>
 				The text that will appear on the button
 			</p>
-			<p><strong>id</strong> <br>
+			<p><strong><code>id</code></strong> <br>
 				Your Tithe.ly Church ID
 			</p>
-			<p><strong>styling_class</strong>  <br>
+			<p><strong><code>styling_class</code></strong>  <br>
 				Optionally include a CSS class (or classes) for styling
 			</p>
-			<p><strong>amount</strong>  <br>
+			<p><strong><code>amount</code></strong>  <br>
 				Optionally set a specific amount for the button
 			</p>
-			<p><strong>giving-to</strong> <br>
+			<p><strong><code>giving-to</code></strong> <br>
 				Optionally set a specific purpose the money will be given to
 			</p>
 		</div>
@@ -200,13 +200,13 @@ function wp_tithely_button( $atts) {
 		$options = get_option( 'tithely_options_option_name' ); 
 
 	//Get Tithely Church ID
-		$tithely_church_id = $options['tithely_church_id_0'];
+		$tithely_church_id = esc_html($options['tithely_church_id_0']);
 
 	//Get the Button Text
-		$tithely_button_text = $options['default_button_text_1'];
+		$tithely_button_text = esc_html($options['default_button_text_1']);
 
 	//Get the Styling Class
-		$tithely_styling_class = $options['styling_class_2'];
+		$tithely_styling_class = esc_html($options['styling_class_2']);
 
 	// Attributes
 	$shortcode_atts =  shortcode_atts(
@@ -219,7 +219,7 @@ function wp_tithely_button( $atts) {
 		), $atts );
 
 	if ($shortcode_atts['id'] !='') {
-		$tithely_church_id = $shortcode_atts['id'];
+		$tithely_church_id = esc_html($shortcode_atts['id']);
 	}
 
     // Code
@@ -277,16 +277,16 @@ add_shortcode( 'tithely', 'wp_tithely_button' );
 
 
 	//Get Tithely Church ID
-		$tithely_church_id = $instance['tithely_church_id'];
+		$tithely_church_id = esc_html($instance['tithely_church_id']);
 
 	//Get Styling Class
-		$tithely_styling_class = $instance['tithely_styling_class'];
+		$tithely_styling_class = esc_html($instance['tithely_styling_class']);
 
 	//Get Amount
-		$tithely_amount = $instance['tithely_amount'];
+		$tithely_amount = esc_html($instance['tithely_amount']);
 
 	//Get Styling Class
-		$tithely_giving_to = $instance['tithely_giving_to'];
+		$tithely_giving_to = esc_html($instance['tithely_giving_to']);
 
 	//Get the Button Text
 		$tithely_button_text = $instance['title'];
