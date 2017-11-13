@@ -22,7 +22,7 @@ Whilst Tithely processes payments securely - we recommend you only use the give 
 == Installation ==
 
 
-1. Upload `wp-tithely.php` to the `/wp-content/plugins/` directory
+1. Upload 'wp-tithely.php' to the '/wp-content/plugins/'' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Sign up for your church's Tithely account at [https://tithe.ly/](https://tithe.ly/) and note your 'Church ID'
 1. Enter your 'Church ID' and some default text for your give button in the settings (Settings > Tithely Options)
@@ -46,12 +46,13 @@ There are two ways you can insert your button.
 1. You can insert the button into your page content using the shortcode [tithely]. It will use the Church ID and Button Text defined in the options above, unless you include the additional attributes outlined below: [tithely button="Donate Now" id="12345" amount="100" styling_class="button" give-to="Building Fund"]
 
 = Is this secure? =
-Whilst Tithely processes payments securely - we recommend you only use the give button on  a page that is protected with SSL encryption. It's pretty cheap to add and usually costs around $30-50 a year depending on the service. Talk to your hosting provider to find out more details.
+Whilst Tithely processes payments securely - we recommend you only use the give button on a page that is protected with SSL encryption. It's pretty cheap to add and usually costs around $30-50 a year depending on the service. Talk to your hosting provider to find out more details about installing an SSL certificate.
 
 
 == Changelog ==
 
 ==2.0==
+* Change name Tithe.ly Giving Button (for better clarity)
 * Update plugin to use new Tithe.ly Javascript
 * Remove TinyMCE popup as we don't really need it
 * Add new 'amount' and 'giving-to' attributes

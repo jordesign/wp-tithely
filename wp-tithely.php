@@ -7,7 +7,7 @@
  * @package           Wp_Tithely
  *
  * @wordpress-plugin
- * Plugin Name:       WP Tithely
+ * Plugin Name:       Tithe.ly Giving Button
  * Plugin URI:        http://wpchurch.team/tithely
  * Description:       Tools to insert Tithely giving buttons into your WordPress site
  * Version:           2.0
@@ -23,6 +23,13 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+//Register the Tithely script
+function wp_tithely_enqueue_script() {
+	wp_register_script( "tithely", array(), '1.0.0', true );
+}
+
+add_action( 'wp_enqueue_scripts', 'wp_tithely_enqueue_script' );
 
 
 //Options Screen to load Tithely Church ID & Button Text
@@ -186,6 +193,8 @@ function wp_tithely_button( $atts) {
 
 	//Enqueue script
 		wp_enqueue_script( 'tithely' );
+		wp_add_inline_script( "tithely_init", "var tw = create_tithely_widget();" );
+
 
 	//Pull in the site options
 		$options = get_option( 'tithely_options_option_name' ); 
@@ -261,6 +270,10 @@ add_shortcode( 'tithely', 'wp_tithely_button' );
 
 	// This is where you run the code and display the output
 	// Code
+
+	//Enqueue script
+		wp_enqueue_script( 'tithely' );
+		wp_add_inline_script( "tithely_init", "var tw = create_tithely_widget();" );
 
 
 	//Get Tithely Church ID
