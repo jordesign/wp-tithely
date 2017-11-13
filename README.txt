@@ -1,10 +1,10 @@
 === Plugin Name ===
-Contributors: jordesign
-Donate link: http://www.jordesign.com
+Contributors: WP Church Team, Jordesign
+Donate link: http://wpchurch.team
 Tags: giving, tithely, church
 Requires at least: 3.0.1
-Tested up to: 4.3
-Stable tag: 1.5
+Tested up to: 4.9
+Stable tag: 2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,11 @@ Whilst Tithely processes payments securely - we recommend you only use the give 
 
 
 == Changelog ==
+
+==2.0==
+* Update plugin to use new Tithe.ly Javascript
+* Remove TinyMCE popup as we don't really need it
+* Add new 'amount' and 'giving-to' attributes
 
 ==1.2==
 * Move script to header so the button fires when clicked.

@@ -8,9 +8,9 @@
  *
  * @wordpress-plugin
  * Plugin Name:       WP Tithely
- * Plugin URI:        http://www.jordesign.com
+ * Plugin URI:        http://wpchurch.team/tithely
  * Description:       Tools to insert Tithely giving buttons into your WordPress site
- * Version:           1.5
+ * Version:           2.0
  * Author:            Jordan Gillman
  * Author URI:        http://www.jordesign.com
  * License:           GPL-2.0+
@@ -24,13 +24,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-//Load Tithely Javascript
-function wp_tithely_scripts() {
-	wp_enqueue_script( 'tithely', 'https://tithe.ly/widget/give.js?3', array('jquery'), '1.0.0', false );
-}
-
-add_action( 'wp_enqueue_scripts', 'wp_tithely_scripts' );
-
 
 //Options Screen to load Tithely Church ID & Button Text
 class TithelyOptions {
@@ -43,8 +36,8 @@ class TithelyOptions {
 
 	public function tithely_options_add_plugin_page() {
 		add_options_page(
-			'Tithely Options', // page_title
-			'Tithely Options', // menu_title
+			'Tithe.ly Giving Options', // page_title
+			'Tithe.ly Giving Options', // menu_title
 			'manage_options', // capability
 			'tithely-options', // menu_slug
 			array( $this, 'tithely_options_create_admin_page' ) // function
@@ -55,7 +48,7 @@ class TithelyOptions {
 		$this->tithely_options_options = get_option( 'tithely_options_option_name' ); ?>
 
 		<div class="wrap">
-			<h2>Tithely Options</h2>
+			<h2>Tithe.ly Giving Options</h2>
 			<p>Enter your Tithely Church ID and the default text you would like for the button.</p>
 			<?php settings_errors(); ?>
 
@@ -104,6 +97,14 @@ class TithelyOptions {
 			'tithely-options-admin', // page
 			'tithely_options_setting_section' // section
 		);
+
+		add_settings_field(
+			'styling_class_2', // id
+			'CSS class for styling', // title
+			array( $this, 'styling_class_2_callback' ), // callback
+			'tithely-options-admin', // page
+			'tithely_options_setting_section' // section
+		);
 	}
 
 	public function tithely_options_sanitize($input) {
@@ -114,6 +115,10 @@ class TithelyOptions {
 
 		if ( isset( $input['default_button_text_1'] ) ) {
 			$sanitary_values['default_button_text_1'] = sanitize_text_field( $input['default_button_text_1'] );
+		}
+
+		if ( isset( $input['styling_class_2'] ) ) {
+			$sanitary_values['styling_class_2'] = sanitize_text_field( $input['styling_class_2'] );
 		}
 
 		return $sanitary_values;
@@ -137,6 +142,14 @@ class TithelyOptions {
 		);
 	}
 
+	public function styling_class_2_callback() {
+		printf(
+			'<input class="regular-text" type="text" name="tithely_options_option_name[styling_class_2]" id="styling_class_2" value="%s">
+			<p>If your theme has a specific CSS class for styling buttons - you can add it here.</p>',
+			isset( $this->tithely_options_options['styling_class_2'] ) ? esc_attr( $this->tithely_options_options['styling_class_2']) : ''
+		);
+	}
+
 }
 if ( is_admin() )
 	$tithely_options = new TithelyOptions();
@@ -154,6 +167,9 @@ if ( is_admin() )
 // Define Tithely Shortcode
 function wp_tithely_button( $atts) {
 
+	//Enqueue script
+		wp_enqueue_script( 'tithely' );
+
 	//Pull in the site options
 		$options = get_option( 'tithely_options_option_name' ); 
 
@@ -163,11 +179,17 @@ function wp_tithely_button( $atts) {
 	//Get the Button Text
 		$tithely_button_text = $options['default_button_text_1'];
 
+	//Get the Styling Class
+		$tithely_styling_class = $options['styling_class_2'];
+
 	// Attributes
 	$shortcode_atts =  shortcode_atts(
 		array(
 			'button' => $tithely_button_text,
-			'id' => $tithely_church_sc_id,
+			'id' => $tithely_church_id,
+			'class' => $tithely_styling_class,
+			'amount'=> '',
+			'giving-to' =>'',
 		), $atts );
 
 	if ($shortcode_atts['id'] !='') {
@@ -175,12 +197,21 @@ function wp_tithely_button( $atts) {
 	}
 
     // Code
+
     if ($tithely_church_id!=''){
-    	 return '<button class="tithely-give-btn button tithely-button" data-church-id="' . $tithely_church_id . '">' . $shortcode_atts['button'] . '</button>
+    	 $buttonCode =  '<button class="tithely-give-btn btn btn-primary et_pb_button fl-button elementor-button ' . $shortcode_atts['class'] . '" data-church-id="' . $tithely_church_id . '"' ;
+    	 if($tithely_amount = $shortcode_atts['amount']){
+    	 	$buttonCode .= 'data-amount="' . $tithely_amount . '"' ;
+    	 }
+    	 if($tithely_giving_to = $shortcode_atts['giving-to']){
+    	 	$buttonCode .= 'data-giving-to="' . $tithely_giving_to . '"' ;
+    	 }
+    	 $buttonCode .='>' . $shortcode_atts['button'] . '</button>
+    	 		<script src="https://tithe.ly/widget/v3/give.js?3"></script>
 		    <script>
-			  var config = {};
-			  var tw = create_tithely_widget(config);
+			  var tw = create_tithely_widget();
 			</script>';
+	return $buttonCode;
     }else{
     	return $tithely_church_id;
     }
@@ -214,6 +245,9 @@ add_shortcode( 'tithely', 'wp_tithely_button' );
 	// This is where you run the code and display the output
 	// Code
 
+	//Enqueue script
+		wp_enqueue_script( 'tithely-giving' );
+
 	//Get Tithely Church ID
 		$tithely_church_id = $instance['tithely_church_id'];
 
@@ -225,6 +259,7 @@ add_shortcode( 'tithely', 'wp_tithely_button' );
 
     if ($tithely_church_id!=''){
     	 echo '<button class="tithely-give-btn button tithely-button" data-church-id=" data-church-id="' . $tithely_church_id . '">' . $tithely_button_text . '</button>
+    	 		<script src="https://tithe.ly/widget/v3/give.js?3"></script>
 		    <script>
 			  var config = {};
 			  var tw = create_tithely_widget(config);
@@ -279,48 +314,3 @@ add_shortcode( 'tithely', 'wp_tithely_button' );
 		register_widget( 'wp_tithely_widget' );
 	}
 	add_action( 'widgets_init', 'wp_tithely_load_widget' );
-
-	//Add Button to TinyMCE for Shortcode
-
-add_action('media_buttons_context','add_my_tinymce_media_button');
-function add_my_tinymce_media_button($context){
-
-return $context.=__("
-<a href=\"#TB_inline?width=480&inlineId=my_shortcode_popup&width=640&height=513\" class=\"button thickbox\" id=\"my_shortcode_popup_button\" title=\"Add My Shortcode\">Add My Shortcode</a>");
-}
-
-add_action('admin_footer','my_shortcode_media_button_popup');
-//Generate inline content for the popup window when the "my shortcode" button is clicked
-function my_shortcode_media_button_popup(){?>
-  <div id="my_shortcode_popup" style="display:none;">
-    <--".wrap" class div is needed to make thickbox content look good-->
-    <div class="wrap">
-      <div>
-        <h2>Insert My Shortcode</h2>
-        <div class="my_shortcode_add">
-          <input type="text" id="id_of_textbox_user_typed_in"><button class="button-primary" id="id_of_button_clicked">Add Shortcode</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<?php
-}
-
-//javascript code needed to make shortcode appear in TinyMCE edtor
-add_action('admin_footer','my_shortcode_add_shortcode_to_editor');
-function my_shortcode_add_shortcode_to_editor(){?>
-<script>
-jQuery('#id_of_button_clicked ').on('click',function(){
-  var user_content = jQuery('#id_of_textbox_user_typed_in').val();
-  var shortcode = '[my_shortcode attributes="'+user_content+'"/]';
-  if( !tinyMCE.activeEditor || tinyMCE.activeEditor.isHidden()) {
-    jQuery('textarea#content').val(shortcode);
-  } else {
-    tinyMCE.execCommand('mceInsertContent', false, shortcode);
-  }
-  //close the thickbox after adding shortcode to editor
-  self.parent.tb_remove();
-});
-</script>
-<?php
-}
