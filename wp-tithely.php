@@ -245,11 +245,18 @@ add_shortcode( 'tithely', 'wp_tithely_button' );
 	// This is where you run the code and display the output
 	// Code
 
-	//Enqueue script
-		wp_enqueue_script( 'tithely-giving' );
 
 	//Get Tithely Church ID
 		$tithely_church_id = $instance['tithely_church_id'];
+
+	//Get Styling Class
+		$tithely_styling_class = $instance['tithely_styling_class'];
+
+	//Get Amount
+		$tithely_amount = $instance['tithely_amount'];
+
+	//Get Styling Class
+		$tithely_giving_to = $instance['tithely_giving_to'];
 
 	//Get the Button Text
 		$tithely_button_text = $instance['title'];
@@ -258,7 +265,7 @@ add_shortcode( 'tithely', 'wp_tithely_button' );
 		}
 
     if ($tithely_church_id!=''){
-    	 echo '<button class="tithely-give-btn button tithely-button" data-church-id=" data-church-id="' . $tithely_church_id . '">' . $tithely_button_text . '</button>
+    	 echo '<button class="tithely-give-btn btn btn-primary et_pb_button fl-button elementor-button ' . $tithely_styling_class . '" data-church-id="' . $tithely_church_id . '" data-amount="' . $tithely_amount . '" data-giving-to="' . $tithely_giving_to . '">' . $tithely_button_text . '</button>
     	 		<script src="https://tithe.ly/widget/v3/give.js?3"></script>
 		    <script>
 			  var config = {};
@@ -287,6 +294,24 @@ add_shortcode( 'tithely', 'wp_tithely_button' );
 	else {
 	$tithely_church_id = '';
 	}
+	if ( isset( $instance[ 'tithely_styling_class' ] ) ) {
+	$tithely_styling_class = $instance[ 'tithely_styling_class' ];
+	}
+	else {
+	$tithely_styling_class = '';
+	}
+	if ( isset( $instance[ 'tithely_amount' ] ) ) {
+	$tithely_amount = $instance[ 'tithely_amount' ];
+	}
+	else {
+	$tithely_amount = '';
+	}
+	if ( isset( $instance[ 'tithely_giving_to' ] ) ) {
+	$tithely_giving_to = $instance[ 'tithely_giving_to' ];
+	}
+	else {
+	$tithely_giving_to = '';
+	}
 	// Widget admin form
 	?>
 	<p>
@@ -297,6 +322,21 @@ add_shortcode( 'tithely', 'wp_tithely_button' );
 	<label for="<?php echo $this->get_field_id( 'tithely_church_id' ); ?>"><?php _e( 'Tithely Church ID:' ); ?></label> 
 	<input class="widefat" id="<?php echo $this->get_field_id( 'tithely_church_id' ); ?>" name="<?php echo $this->get_field_name( 'tithely_church_id' ); ?>" type="text" value="<?php echo esc_attr( $tithely_church_id ); ?>" />
 	</p>
+	<p>
+	<label for="<?php echo $this->get_field_id( 'tithely_styling_class' ); ?>"><?php _e( 'Styling Class:' ); ?></label> 
+	<input class="widefat" id="<?php echo $this->get_field_id( 'tithely_styling_class' ); ?>" name="<?php echo $this->get_field_name( 'tithely_styling_class' ); ?>" type="text" value="<?php echo esc_attr( $tithely_styling_class ); ?>" />
+	<small>Add any CSS classes your theme uses for styling buttons</small>
+	</p>
+	<p>
+	<label for="<?php echo $this->get_field_id( 'tithely_amount' ); ?>"><?php _e( 'Amount to Give:' ); ?></label> 
+	<input class="widefat" id="<?php echo $this->get_field_id( 'tithely_amount' ); ?>" name="<?php echo $this->get_field_name( 'tithely_amount' ); ?>" type="text" value="<?php echo esc_attr( $tithely_amount ); ?>" />
+	<small>Use this to set a specific amount for this button</small>
+	</p>
+	<p>
+	<label for="<?php echo $this->get_field_id( 'tithely_giving_to' ); ?>"><?php _e( 'Give To:' ); ?></label> 
+	<input class="widefat" id="<?php echo $this->get_field_id( 'tithely_giving_to' ); ?>" name="<?php echo $this->get_field_name( 'tithely_giving_to' ); ?>" type="text" value="<?php echo esc_attr( $tithely_giving_to ); ?>" />
+	<small>Use this if this button is to give to a specific purpose</small>
+	</p>
 	<?php 
 	}
 		
@@ -305,6 +345,9 @@ add_shortcode( 'tithely', 'wp_tithely_button' );
 	$instance = array();
 	$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 	$instance['tithely_church_id'] = ( ! empty( $new_instance['tithely_church_id'] ) ) ? strip_tags( $new_instance['tithely_church_id'] ) : '';
+	$instance['tithely_styling_class'] = ( ! empty( $new_instance['tithely_styling_class'] ) ) ? strip_tags( $new_instance['tithely_styling_class'] ) : '';
+	$instance['tithely_amount'] = ( ! empty( $new_instance['tithely_amount'] ) ) ? strip_tags( $new_instance['tithely_amount'] ) : '';
+	$instance['tithely_giving_to'] = ( ! empty( $new_instance['tithely_giving_to'] ) ) ? strip_tags( $new_instance['tithely_giving_to'] ) : '';
 	return $instance;
 	}
 	} // Class wpb_widget ends here

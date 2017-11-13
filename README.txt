@@ -54,6 +54,8 @@ Whilst Tithely processes payments securely - we recommend you only use the give 
 * Update plugin to use new Tithe.ly Javascript
 * Remove TinyMCE popup as we don't really need it
 * Add new 'amount' and 'giving-to' attributes
+* Add classes to button to pick up styling from Divi, Beaver Builder and Elementor
+* Add new fields to widget
 
 ==1.2==
 * Move script to header so the button fires when clicked.
