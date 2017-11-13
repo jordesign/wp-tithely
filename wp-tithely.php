@@ -64,7 +64,24 @@ class TithelyOptions {
 			<p>There are two ways you can insert your button.</p>
 
 			<p>1. Insert the WP Tithely Widget into one of your sidebars. You can insert your Church ID and the text you would like the button to display.</p>
-			<p>2. You can insert the button into your page content using the shortcode [tithely]. It will use the Church ID and Button Text defined in the options above, unless you include a new phrase or ID like: [tithely button="Donate Now" id="12345"]</p>.
+			<p>2. You can insert the button into your page content using the shortcode [tithely]. It will use the Church ID and Button Text defined in the options above, unless you include the additional attributes outlined below: [tithely button="Donate Now" id="12345" amount="100" styling_class="button" give-to="Building Fund"]</p>.
+
+			<h2>Shortcode Attributes</h2>
+			<p><strong>button</strong> <br>
+				The text that will appear on the button
+			</p>
+			<p><strong>id</strong> <br>
+				Your Tithe.ly Church ID
+			</p>
+			<p><strong>styling_class</strong>  <br>
+				Optionally include a CSS class (or classes) for styling
+			</p>
+			<p><strong>amount</strong>  <br>
+				Optionally set a specific amount for the button
+			</p>
+			<p><strong>giving-to</strong> <br>
+				Optionally set a specific purpose the money will be given to
+			</p>
 		</div>
 	<?php }
 
@@ -145,7 +162,7 @@ class TithelyOptions {
 	public function styling_class_2_callback() {
 		printf(
 			'<input class="regular-text" type="text" name="tithely_options_option_name[styling_class_2]" id="styling_class_2" value="%s">
-			<p>If your theme has a specific CSS class for styling buttons - you can add it here.</p>',
+			<p><small>Add any CSS classes your theme uses for styling buttons</small></p>',
 			isset( $this->tithely_options_options['styling_class_2'] ) ? esc_attr( $this->tithely_options_options['styling_class_2']) : ''
 		);
 	}
