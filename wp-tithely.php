@@ -236,6 +236,39 @@ function wp_tithely_button( $atts) {
 }
 add_shortcode( 'tithely', 'wp_tithely_button' );
 
+function wp_tithely_iframe( $atts ) {
+	//Pull in the site options
+	$options = get_option( 'tithely_options_option_name' ); 
+
+	//Get Tithely Church ID
+	$tithely_church_id = $options['tithely_church_id_0'];
+
+	// Attributes
+	$shortcode_atts = shortcode_atts(
+		array(
+			'id' => $tithely_church_id,
+			'class' => 'tithely-iframe', // class to apply to the iframe for styling
+			'width' => '100%', // CSS width to apply to iframe
+			'height' => '770px', // CSS height to apply to iframe
+		), 
+		$atts 
+	);
+
+	if ( $shortcode_atts['id'] != '' ) {
+
+		// Generate the iframe output
+		$iframe = sprintf( '<iframe id="tithely-web-widget-wrapper" class="%s" style="overflow: hidden; opacity: 1;" src="https://tithe.ly/give_new/www/#/tithely/give-one-time/%s" width="%s" height="%s" frameborder="0"></iframe>', $shortcode_atts['class'], $shortcode_atts['id'], $shortcode_atts['width'], $shortcode_atts['height'] );
+
+		return $iframe;
+ 
+ 	} else {
+
+ 		return $tithely_church_id;
+
+	}
+}
+add_shortcode( 'tithely_embed', 'wp_tithely_iframe' );
+
 //Tithely Widget
 // Creating the widget 
 	class wp_tithely_widget extends WP_Widget {
