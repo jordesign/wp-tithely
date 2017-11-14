@@ -64,9 +64,9 @@ class TithelyOptions {
 			<p>There are two ways you can insert your button.</p>
 
 			<p>1. Insert the WP Tithely Widget into one of your sidebars. You can insert your Church ID and the text you would like the button to display.</p>
-			<p>2. You can insert the button into your page content using the shortcode [tithely]. It will use the Church ID and Button Text defined in the options above, unless you include the additional attributes outlined below: [tithely button="Donate Now" id="12345" amount="100" styling_class="button" give-to="Building Fund"]</p>.
+			<p>2. You can insert the button into your page content using the shortcode <code>[tithely]</code>. It will use the Church ID and Button Text defined in the options above, unless you include the additional attributes outlined below: <code>[tithely button="Donate Now" id="12345" amount="100" styling_class="button" give-to="Building Fund"]</code></p>
 
-			<h2>Shortcode Attributes</h2>
+			<h3>Shortcode Attributes</h3>
 			<p><strong>button</strong> <br>
 				The text that will appear on the button
 			</p>
@@ -81,6 +81,24 @@ class TithelyOptions {
 			</p>
 			<p><strong>giving-to</strong> <br>
 				Optionally set a specific purpose the money will be given to
+			</p>
+
+			<h2>Embed Form</h2>
+			<p>You may use the [tithely_embed] shortcode to embed an iframe giving form directly in your page or post content.</p>
+			<p><strong>IMPORTANT:</strong> You <em>must</em> have an SSL certificate running on your site to use this feature. You can use the <a href="https://www.sslshopper.com/ssl-checker.html" target="_blank">SSL Checker</a> to verify that your site has an SSL certificate installed.</p>
+			<p>Example: <code>[tithely_embed id="12345" class="class1 class2" width="100%" height="770px"]</code></p>
+			<h3>Embed Shortcode Attributes</h3>
+			<p><strong>id</strong> <br>
+				Your Tithe.ly Church ID
+			</p>
+			<p><strong>class</strong> <br>
+				CSS classnames to add to the iframe
+			</p>
+			<p><strong>width</strong> <br>
+				CSS width of iframe (include units, eg: 100%)
+			</p>
+			<p><strong>height</strong> <br>
+				CSS height of iframe (include units, eg: 770px)
 			</p>
 		</div>
 	<?php }
@@ -235,6 +253,39 @@ function wp_tithely_button( $atts) {
    
 }
 add_shortcode( 'tithely', 'wp_tithely_button' );
+
+function wp_tithely_iframe( $atts ) {
+	//Pull in the site options
+	$options = get_option( 'tithely_options_option_name' ); 
+
+	//Get Tithely Church ID
+	$tithely_church_id = $options['tithely_church_id_0'];
+
+	// Attributes
+	$shortcode_atts = shortcode_atts(
+		array(
+			'id' => $tithely_church_id,
+			'class' => 'tithely-iframe', // class to apply to the iframe for styling
+			'width' => '100%', // CSS width to apply to iframe
+			'height' => '770px', // CSS height to apply to iframe
+		), 
+		$atts 
+	);
+
+	if ( $shortcode_atts['id'] != '' ) {
+
+		// Generate the iframe output
+		$iframe = sprintf( '<iframe id="tithely-web-widget-wrapper-embed" class="%s" style="overflow: hidden; opacity: 1;" src="https://tithe.ly/give_new/www/#/tithely/give-one-time/%s" width="%s" height="%s" frameborder="0"></iframe>', $shortcode_atts['class'], $shortcode_atts['id'], $shortcode_atts['width'], $shortcode_atts['height'] );
+
+		return $iframe;
+ 
+ 	} else {
+
+ 		return $tithely_church_id;
+
+	}
+}
+add_shortcode( 'tithely_embed', 'wp_tithely_iframe' );
 
 //Tithely Widget
 // Creating the widget 
