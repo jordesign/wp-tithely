@@ -10,9 +10,9 @@
  * Plugin Name:       Tithe.ly Giving Button
  * Plugin URI:        http://wpchurch.team/tithely
  * Description:       Tools to insert Tithely giving buttons into your WordPress site
- * Version:           2.0
- * Author:            Jordan Gillman
- * Author URI:        http://www.jordesign.com
+ * Version:           2.2
+ * Author:            WP Church Team, Jordan Gillman, 
+ * Author URI:        http://www.wpchurch.team
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wp-tithely
