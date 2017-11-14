@@ -4,7 +4,7 @@ Donate link: http://wpchurch.team
 Tags: giving, tithely, church, donation, tithing
 Requires at least: 3.0.1
 Tested up to: 4.9
-Stable tag: 2.2
+Stable tag: 2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,7 +68,10 @@ Whilst Tithely processes payments securely - we recommend you only use the give 
 
 == Changelog ==
 
-==2.0==
+==2.4==
+*Add shortcode to embed form directly (thanks @eriktdesign)
+
+==2.2==
 * Change name Tithe.ly Giving Button (for better clarity)
 * Update plugin to use new Tithe.ly Javascript
 * Remove TinyMCE popup as we don't really need it
