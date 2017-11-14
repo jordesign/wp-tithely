@@ -26,10 +26,10 @@ if ( ! defined( 'WPINC' ) ) {
 
 //Register the Tithely script
 function wp_tithely_enqueue_script() {
-	wp_register_script( "tithely", array(), '1.0.0', true );
+	wp_register_script( "tithely", 'https://tithe.ly/widget/v3/give.js?3', array(), '1.0.0', true );
 }
 
-add_action( 'wp_enqueue_scripts', 'wp_tithely_enqueue_script' );
+add_action( 'wp_enqueue_scripts', '' 'wp_tithely_enqueue_script' );
 
 
 //Options Screen to load Tithely Church ID & Button Text
@@ -266,6 +266,11 @@ function wp_tithely_button( $atts) {
 add_shortcode( 'tithely', 'wp_tithely_button' );
 
 function wp_tithely_iframe( $atts ) {
+
+	/Enqueue script
+		wp_enqueue_script( 'tithely' );
+		wp_add_inline_script( "tithely_init", "var tw = create_tithely_widget();" );
+
 	//Pull in the site options
 	$options = get_option( 'tithely_options_option_name' ); 
 
@@ -348,12 +353,7 @@ add_shortcode( 'tithely_embed', 'wp_tithely_iframe' );
 		}
 
     if ($tithely_church_id!=''){
-    	 echo '<button class="tithely-give-btn btn btn-primary et_pb_button fl-button elementor-button ' . $tithely_styling_class . '" data-church-id="' . $tithely_church_id . '" data-amount="' . $tithely_amount . '" data-giving-to="' . $tithely_giving_to . '">' . $tithely_button_text . '</button>
-    	 		<script src="https://tithe.ly/widget/v3/give.js?3"></script>
-		    <script>
-			  var config = {};
-			  var tw = create_tithely_widget(config);
-			</script>';
+    	 echo '<button class="tithely-give-btn btn btn-primary et_pb_button fl-button elementor-button ' . $tithely_styling_class . '" data-church-id="' . $tithely_church_id . '" data-amount="' . $tithely_amount . '" data-giving-to="' . $tithely_giving_to . '">' . $tithely_button_text . '</button>';
     }else{
     	echo $tithely_church_id;
     }
