@@ -275,7 +275,7 @@ function wp_tithely_iframe( $atts ) {
 	if ( $shortcode_atts['id'] != '' ) {
 
 		// Generate the iframe output
-		$iframe = sprintf( '<iframe id="tithely-web-widget-wrapper" class="%s" style="overflow: hidden; opacity: 1;" src="https://tithe.ly/give_new/www/#/tithely/give-one-time/%s" width="%s" height="%s" frameborder="0"></iframe>', $shortcode_atts['class'], $shortcode_atts['id'], $shortcode_atts['width'], $shortcode_atts['height'] );
+		$iframe = sprintf( '<iframe id="tithely-web-widget-wrapper-embed" class="%s" style="overflow: hidden; opacity: 1;" src="https://tithe.ly/give_new/www/#/tithely/give-one-time/%s" width="%s" height="%s" frameborder="0"></iframe>', $shortcode_atts['class'], $shortcode_atts['id'], $shortcode_atts['width'], $shortcode_atts['height'] );
 
 		return $iframe;
  
