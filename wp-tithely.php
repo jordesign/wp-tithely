@@ -29,7 +29,7 @@ function wp_tithely_enqueue_script() {
 	wp_register_script( "tithely", 'https://tithe.ly/widget/v3/give.js?3', array(), '1.0.0', true );
 }
 
-add_action( 'wp_enqueue_scripts', '' 'wp_tithely_enqueue_script' );
+add_action( 'wp_enqueue_scripts', 'wp_tithely_enqueue_script' );
 
 
 //Options Screen to load Tithely Church ID & Button Text
@@ -267,7 +267,7 @@ add_shortcode( 'tithely', 'wp_tithely_button' );
 
 function wp_tithely_iframe( $atts ) {
 
-	/Enqueue script
+	//Enqueue script
 		wp_enqueue_script( 'tithely' );
 		wp_add_inline_script( "tithely_init", "var tw = create_tithely_widget();" );
 
