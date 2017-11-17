@@ -213,7 +213,7 @@ function wp_tithely_button( $atts) {
 
 	//Enqueue script
 		wp_enqueue_script( 'tithely' );
-		wp_add_inline_script( "tithely_init", "var tw = create_tithely_widget();" );
+		wp_add_inline_script( "tithely", "var tw = create_tithely_widget();" );
 
 
 	//Pull in the site options
@@ -269,7 +269,7 @@ function wp_tithely_iframe( $atts ) {
 
 	//Enqueue script
 		wp_enqueue_script( 'tithely' );
-		wp_add_inline_script( "tithely_init", "var tw = create_tithely_widget();" );
+		wp_add_inline_script( "tithely", "var tw = create_tithely_widget();" );
 
 	//Pull in the site options
 	$options = get_option( 'tithely_options_option_name' ); 
@@ -331,7 +331,7 @@ add_shortcode( 'tithely_embed', 'wp_tithely_iframe' );
 
 	//Enqueue script
 		wp_enqueue_script( 'tithely' );
-		wp_add_inline_script( "tithely_init", "var tw = create_tithely_widget();" );
+		wp_add_inline_script( "tithely", "var tw = create_tithely_widget();" );
 
 
 	//Get Tithely Church ID
